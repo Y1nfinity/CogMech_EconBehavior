@@ -60,7 +60,7 @@ pop['g_j'] = G(alpha_pop, d)
 A_pop, t0_pop = np.polyfit(pop['g_j'], T, 1)
 pop['fit'] = A_pop * pop['g_j'] + t0_pop
 resid = T - pop['fit']
-r2 = 1 - resid.var() / T.var()
+r2 = 1 - (resid @resid) / ((T-T.mean()) @ (T-T.mean()))
 se_A = np.sqrt(resid @ resid / (len(T) - 2) / ((pop['g_j'] - pop['g_j'].mean()) ** 2).sum())
 print(f"\n3(b): A = {A_pop:.1f} ms (SE {se_A:.1f}),  t0 = {t0_pop:.1f} ms,  R^2 = {r2:.3f},  "
       f"RMSE = {np.sqrt(np.mean(resid**2)):.1f} ms")
