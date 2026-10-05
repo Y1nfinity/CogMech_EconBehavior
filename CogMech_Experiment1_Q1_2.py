@@ -118,11 +118,11 @@ print(f"RMSE(p_j - e_j) = {np.sqrt(np.mean((tab['p_j'] - tab['e_j']) ** 2)):.3f}
 # ======================= Question 2: response times =======================
 # DDM mean decision time (barriers +/-1, drift mu = alpha*Delta, unit noise):
 #   E[T] = tanh(mu)/mu  =: G_alpha(Delta)   (-> 1 as Delta -> 0);  predicted RT = A*G + t0
-def G(alpha, x):
-    mu = alpha * np.asarray(x, dtype=float)
-    out = np.ones_like(mu)
-    nz = np.abs(mu) > 1e-9
-    out[nz] = np.tanh(mu[nz]) / mu[nz]
+def G(alpha, x):                                       # tanh(alpha*x)/x  (= alpha at x=0)
+    x = np.asarray(x, dtype=float)
+    out = np.full_like(x, alpha)                       # limit as x -> 0 is alpha
+    nz = np.abs(x) > 1e-9
+    out[nz] = np.tanh(alpha * x[nz]) / x[nz]
     return out
 
 

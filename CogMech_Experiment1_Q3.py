@@ -16,11 +16,11 @@ assert len(pop) == 15
 def P(alpha, x):                                       # P_alpha(x) = 1/(1+exp(-2 alpha x))
     return 1.0 / (1.0 + np.exp(-2.0 * alpha * x))
 
-def G(alpha, x):                                       # tanh(mu)/mu, mu = alpha*x  (=1 at x=0)
-    mu = alpha * np.asarray(x, dtype=float)
-    out = np.ones_like(mu)
-    nz = np.abs(mu) > 1e-9
-    out[nz] = np.tanh(mu[nz]) / mu[nz]
+def G(alpha, x):                                       # tanh(alpha*x)/x  (= alpha at x=0)
+    x = np.asarray(x, dtype=float)
+    out = np.full_like(x, alpha)                       # limit as x -> 0 is alpha
+    nz = np.abs(x) > 1e-9
+    out[nz] = np.tanh(alpha * x[nz]) / x[nz]
     return out
 
 # ---------------- 3(a): MLE of alpha with Delta_i := d_j for every trial in bin j ----------------
